@@ -1,35 +1,40 @@
 package com.andregcaires.webstoreapi.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
-public class Categoria implements Serializable{
+public class Categoria implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
-	//@Column(name = "Nome")
+
 	private String nome;
 	
-	
-	public Categoria() {}
-	
+	@JsonManagedReference
+	@ManyToMany(mappedBy = "categorias") // nome do atributo do outro lado do join
+	private List<Produto> produtos = new ArrayList<>();
+
+	public Categoria() {
+	}
 
 	public Categoria(Integer id, String nome) {
 		super();
 		this.id = id;
 		this.nome = nome;
 	}
-	
-	
 
 	@Override
 	public int hashCode() {
@@ -38,7 +43,6 @@ public class Categoria implements Serializable{
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -57,7 +61,6 @@ public class Categoria implements Serializable{
 		return true;
 	}
 
-
 	public Integer getId() {
 		return id;
 	}
@@ -74,6 +77,12 @@ public class Categoria implements Serializable{
 		this.nome = nome;
 	}
 
-	
-	
+	public List<Produto> getProdutos() {
+		return produtos;
+	}
+
+	public void setProdutos(List<Produto> produtos) {
+		this.produtos = produtos;
+	}
+
 }

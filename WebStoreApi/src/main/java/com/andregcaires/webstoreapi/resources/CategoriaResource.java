@@ -1,30 +1,38 @@
 package com.andregcaires.webstoreapi.resources;
 
 
-import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.andregcaires.webstoreapi.domain.Categoria;
+import com.andregcaires.webstoreapi.domain.Produto;
+import com.andregcaires.webstoreapi.services.CategoriaService;
 
 @RestController
+@RequestMapping("/categorias")
 public class CategoriaResource {
+	
+	@Autowired
+	private CategoriaService service;
 
-	@RequestMapping(method = RequestMethod.GET)
-	public List<Categoria> listar() {
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	public ResponseEntity<?> find(@PathVariable Integer id) {
 		
-		Categoria c1 = new Categoria(1, "Um");
-		Categoria c2 = new Categoria(2, "Dois");
+		Categoria obj = service.find(id);
 		
-		List<Categoria> list = new ArrayList<>();
-		
-		list.add(c1);
-		list.add(c2);
-		
-		return list;
+		return ResponseEntity.ok().body(obj);
+	}
+	
+	@RequestMapping("/")
+	public ResponseEntity<?> findAll(){
+		List<Categoria> obj = service.findAll();
+		return ResponseEntity.ok().body(obj);
 	}
 	
 }
