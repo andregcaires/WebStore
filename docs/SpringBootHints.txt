@@ -1,0 +1,13 @@
+h2-console
+
+@JoinTable
+joinColumns = @JoinColumn(name = "PK")
+
+// tratar referencia ciclica
+JsonManagedReference
+
+JsonBackReference // omite referência
+
+
+@ControllerAdvice
+- para handler de exception

@@ -17,7 +17,7 @@ import com.andregcaires.webstoreapi.services.exceptions.ObjectNotFoundException;
 public class ResourceExceptionHandler {
 
 	// Assinatura obrigatória
-	@ExceptionHandler(ObjectNotFoundException.class)
+	@ExceptionHandler(ObjectNotFoundException.class) // exception jogada no SERVICE 
 	public ResponseEntity<StandardError> objectNotFound(ObjectNotFoundException e, HttpServletRequest request) {
 		
 		StandardError err = new StandardError(HttpStatus.NOT_FOUND.value(), e.getMessage(), System.currentTimeMillis());
