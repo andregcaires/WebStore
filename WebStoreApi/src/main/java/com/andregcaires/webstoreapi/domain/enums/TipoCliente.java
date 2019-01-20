@@ -9,7 +9,7 @@ public enum TipoCliente {
 	private String descricao;
 	
 	
-	// Converte código em enum
+	// Converte código do tipo cliente em enum
 	public static TipoCliente toEnum(Integer cod) {
 		
 		if(cod == null) {
