@@ -25,7 +25,7 @@ public class CidadeResource {
 	}
 	
 	@RequestMapping("/{id}")
-	public ResponseEntity<?> find(@PathVariable Integer id) {
+	public ResponseEntity<?> find(@PathVariable Integer id) throws Throwable {
 		Cidade obj = service.find(id);
 		return ResponseEntity.ok().body(obj);
 	}

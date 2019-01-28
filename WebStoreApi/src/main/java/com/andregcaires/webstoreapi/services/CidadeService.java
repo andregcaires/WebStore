@@ -17,7 +17,7 @@ public class CidadeService {
 	@Autowired
 	private CidadeRepository repo;
 	
-	public Cidade find(Integer id) {
+	public Cidade find(Integer id) throws Throwable {
 		Optional<Cidade> obj = repo.findById(id);
 		return obj.orElseThrow(() -> {throw new ObjectNotFoundException("Objeto não encontrado! ID: "+id
 				+" Tipo: "+ Categoria.class);

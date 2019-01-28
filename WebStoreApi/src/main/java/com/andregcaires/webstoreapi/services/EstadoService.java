@@ -17,7 +17,7 @@ public class EstadoService {
 	@Autowired
 	private EstadoRepository repo;
 	
-	public Estado find(Integer id) {
+	public Estado find(Integer id) throws Throwable {
 		Optional<Estado> obj = repo.findById(id);
 		
 		return obj.orElseThrow(() -> {
