@@ -11,6 +11,7 @@ import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 
 import com.andregcaires.webstoreapi.domain.enums.EstadoPagamento;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED) // mapeamento de herança
@@ -23,6 +24,7 @@ public abstract class Pagamento implements Serializable {
 	
 	private Integer estadoPagamento;
 
+	@JsonBackReference
 	@OneToOne
 	@JoinColumn(name= "pedido_id")
 	@MapsId
