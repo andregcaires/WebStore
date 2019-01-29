@@ -13,6 +13,7 @@ import com.andregcaires.webstoreapi.domain.Cidade;
 import com.andregcaires.webstoreapi.domain.Cliente;
 import com.andregcaires.webstoreapi.domain.Endereco;
 import com.andregcaires.webstoreapi.domain.Estado;
+import com.andregcaires.webstoreapi.domain.ItemPedido;
 import com.andregcaires.webstoreapi.domain.Pagamento;
 import com.andregcaires.webstoreapi.domain.PagamentoComBoleto;
 import com.andregcaires.webstoreapi.domain.PagamentoComCartao;
@@ -25,6 +26,7 @@ import com.andregcaires.webstoreapi.repositories.CidadeRepository;
 import com.andregcaires.webstoreapi.repositories.ClienteRepository;
 import com.andregcaires.webstoreapi.repositories.EnderecoRepository;
 import com.andregcaires.webstoreapi.repositories.EstadoRepository;
+import com.andregcaires.webstoreapi.repositories.ItemPedidoRepository;
 import com.andregcaires.webstoreapi.repositories.PagamentoRepository;
 import com.andregcaires.webstoreapi.repositories.PedidoRepository;
 import com.andregcaires.webstoreapi.repositories.ProdutoRepository;
@@ -56,6 +58,9 @@ public class WebStoreApiApplication implements CommandLineRunner {
 	@Autowired
 	private PagamentoRepository pagamentoRepository;
 	
+	@Autowired
+	private ItemPedidoRepository itemPedidoRepository;
+	
 	public static void main(String[] args) {
 		SpringApplication.run(WebStoreApiApplication.class, args);
 	}
@@ -76,6 +81,7 @@ public class WebStoreApiApplication implements CommandLineRunner {
 		Endereco end1, end2;
 		Pedido ped1, ped2;
 		Pagamento pagto1, pagto2;
+		ItemPedido ip1, ip2, ip3;
 		
 		
 		// Instancias
@@ -99,7 +105,11 @@ public class WebStoreApiApplication implements CommandLineRunner {
 		ped1.setPagamento(pagto1);
 		pagto2 = new PagamentoComBoleto(null, EstadoPagamento.PENDENTE.getCod(), ped2, sdf.parse("03/01/1990 09:15"), null);
 		ped2.setPagamento(pagto2);
-		cli1.getPedidos().addAll(Arrays.asList(ped1, ped2));
+		
+		ip1 = new ItemPedido(ped1, p1, 0.00, 1, 2000.00);
+		ip2 = new ItemPedido(ped1, p3, 0.00, 2, 80.00);
+		ip3 = new ItemPedido(ped2, p2, 100.00, 1, 800.00);
+
 		
 		// Joins
 		p1.getCategorias().addAll(Arrays.asList(cat1));
@@ -114,7 +124,14 @@ public class WebStoreApiApplication implements CommandLineRunner {
 		//est2.getCidades().addAll(Arrays.asList(c1, c3));
 		//est1.getCidades().addAll(Arrays.asList(c2));
 
+		cli1.getPedidos().addAll(Arrays.asList(ped1, ped2));
 		cli1.getEnderecos().addAll(Arrays.asList(end1, end2));
+		
+		ped1.getItens().addAll(Arrays.asList(ip1, ip2));
+		ped2.getItens().addAll(Arrays.asList(ip3));
+		p1.getItens().addAll(Arrays.asList(ip1));
+		p2.getItens().addAll(Arrays.asList(ip3));
+		p3.getItens().addAll(Arrays.asList(ip2));
 		
 		// Persistencias
 		categoriaRepository.saveAll(Arrays.asList(cat1, cat2));
@@ -126,7 +143,7 @@ public class WebStoreApiApplication implements CommandLineRunner {
 		pedidoRepository.saveAll(Arrays.asList(ped1, ped2));
 		pagamentoRepository.saveAll(Arrays.asList(pagto1, pagto2));
 		
-		
+		itemPedidoRepository.saveAll(Arrays.asList(ip1, ip2, ip3));
 	}
 	
 }
