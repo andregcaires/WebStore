@@ -96,7 +96,7 @@ public class Produto implements Serializable {
 	
 	
 
-
+	@JsonIgnore
 	public Set<ItemPedido> getItens() {
 		return itens;
 	}
