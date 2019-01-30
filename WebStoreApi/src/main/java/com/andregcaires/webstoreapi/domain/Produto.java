@@ -22,37 +22,33 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class Produto implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String nome;
 	private Double preco;
 
-	@JsonBackReference
+	@JsonIgnore
 	@ManyToMany
-	@JoinTable(
-			name = "Produto_Categoria",
-			joinColumns = @JoinColumn(name = "produto_id"),
-			inverseJoinColumns = @JoinColumn(name = "categoria_id")
-			)
+	@JoinTable(name = "Produto_Categoria", joinColumns = @JoinColumn(name = "produto_id"), inverseJoinColumns = @JoinColumn(name = "categoria_id"))
 	private List<Categoria> categorias = new ArrayList<>();
-	
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "id.produto")
 	private Set<ItemPedido> itens = new HashSet<>();
-	
+
 	@JsonIgnore
 	public List<Pedido> getPedidos() {
 		List<Pedido> lista = new ArrayList<>();
-		
-		for(ItemPedido item : itens) {
+
+		for (ItemPedido item : itens) {
 			lista.add(item.getPedido());
 		}
 		return lista;
 	}
-	
-	public Produto() {		
+
+	public Produto() {
 	}
 
 	public Produto(Integer id, String nome, Double preco) {
@@ -93,8 +89,6 @@ public class Produto implements Serializable {
 	public void setCategorias(List<Categoria> categorias) {
 		this.categorias = categorias;
 	}
-	
-	
 
 	@JsonIgnore
 	public Set<ItemPedido> getItens() {
@@ -135,5 +129,4 @@ public class Produto implements Serializable {
 		return "Produto [id=" + id + ", nome=" + nome + ", preco=" + preco + ", categorias=" + categorias + "]";
 	}
 
-	
 }
