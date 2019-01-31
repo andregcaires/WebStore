@@ -10,6 +10,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.andregcaires.webstoreapi.domain.Categoria;
+import com.andregcaires.webstoreapi.dto.CategoriaDTO;
 import com.andregcaires.webstoreapi.repositories.CategoriaRepository;
 import com.andregcaires.webstoreapi.services.exceptions.ConstraintException;
 import com.andregcaires.webstoreapi.services.exceptions.ObjectNotFoundException;
@@ -57,6 +58,11 @@ public class CategoriaService {
 		}catch(Exception e) {
 			throw new ConstraintException("Não é possivel excluir categoria que possui produtos!");
 		}
+	}
+	
+	
+	public Categoria fromDTO(CategoriaDTO dto) {
+		return new Categoria(dto.getId(), dto.getNome());
 	}
 
 }
