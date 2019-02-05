@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.andregcaires.webstoreapi.domain.Cliente;
-import com.andregcaires.webstoreapi.domain.Cliente;
 import com.andregcaires.webstoreapi.dto.ClienteDTO;
+import com.andregcaires.webstoreapi.dto.ClienteEnderecoDTO;
 import com.andregcaires.webstoreapi.services.ClienteService;
 
 @RestController
@@ -44,7 +44,7 @@ public class ClienteResource {
 	}
 	
 	@RequestMapping(value = {"/", ""}, method = RequestMethod.POST)
-	public ResponseEntity<Void> insert(@Valid @RequestBody ClienteDTO obj) {
+	public ResponseEntity<Void> insert(@Valid @RequestBody ClienteEnderecoDTO obj) {
 		Cliente body = service.insert(service.fromDTO(obj));
 		
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()

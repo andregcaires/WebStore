@@ -48,8 +48,13 @@ public class CategoriaService {
 	
 	public Categoria update(Categoria entity) {
 
-		find(entity.getId());
-		return repo.save(entity);
+		Categoria databaseObject = find(entity.getId());
+		updateData(entity, databaseObject);
+		return repo.save(databaseObject);
+	}
+	
+	private void updateData(Categoria newObject, Categoria databaseObject) {
+		databaseObject.setNome(newObject.getNome());
 	}
 	
 	public void delete(Integer id) {
