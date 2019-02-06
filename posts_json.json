@@ -2,7 +2,7 @@
 {
 	"nome": "TESTANDO"
 	, "email": "testando@teste.com"
-	, "cpfOuCnpj": "12345678910"
+	, "cpfOuCnpj": "82907799096"
 	, "tipo": "1" 
 	, "telefones": ["111111", "22222", "33333"]
 	, "logradouro": "log testando"
@@ -10,4 +10,14 @@
 	, "complemento": "compl testando"
 	, "cep": "888888888"
 	, "cidadeId": "1"
+}
+
+{
+	"nome": "TESTANDO"
+	, "email": "testando@teste.com"
+}
+
+{
+	"nome": "TESTANDO"
+	, "email": "maria@teste.com"
 }

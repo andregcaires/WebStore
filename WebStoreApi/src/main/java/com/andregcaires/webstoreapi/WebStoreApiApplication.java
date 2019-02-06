@@ -100,7 +100,7 @@ public class WebStoreApiApplication implements CommandLineRunner {
 		c1 = new Cidade(null, "São Paulo", est2);
 		c2 = new Cidade(null, "Belo Horizonte", est1);		
 		c3 = new Cidade(null, "Campinas", est2);		
-		cli1 = new Cliente(null, "Maria Silva", "maria@teste.com", "12345678910", TipoCliente.PESSOAFISICA);
+		cli1 = new Cliente(null, "Maria Silva", "maria@teste.com", "01127669001", TipoCliente.PESSOAFISICA);
 		cli1.getTelefones().addAll(Arrays.asList("16991234567", "169987456123"));
 		end1 = new Endereco(null, "Logradouro Teste", "Num Teste", "Comp Teste", "Bairo Teste", "Cep Teste", cli1, c1);
 		end2= new Endereco(null, "Logradouro 2", "Num 2", "Comp 2", "Bairo 2", "Cep 2", cli1, c2);

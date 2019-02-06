@@ -8,9 +8,9 @@ import javax.validation.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Length;
 
 import com.andregcaires.webstoreapi.domain.Cliente;
-import com.andregcaires.webstoreapi.services.validations.ClienteInsert;
+import com.andregcaires.webstoreapi.services.validations.ClienteUpdate;
 
-@ClienteInsert
+@ClienteUpdate
 public class ClienteDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
