@@ -9,7 +9,7 @@
 		<version>2.1.1.RELEASE</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>br.com.trust.sta</groupId>
+	<groupId>com.andregcaires</groupId>
 	<artifactId>WebStoreApi</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>WebStoreApi</name>

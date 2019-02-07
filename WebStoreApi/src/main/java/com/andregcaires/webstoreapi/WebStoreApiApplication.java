@@ -74,7 +74,7 @@ public class WebStoreApiApplication implements CommandLineRunner {
 		
 		// Declaracoes
 		Categoria cat1, cat2, cat3, cat4, cat5, cat6, cat7;
-		Produto p1, p2, p3;
+		Produto p1, p2, p3, p4, p5, p6, p7;
 		Estado est1, est2;
 		Cidade c1, c2, c3;
 		Cliente cli1;
@@ -95,6 +95,10 @@ public class WebStoreApiApplication implements CommandLineRunner {
 		p1 = new Produto(null, "Camiseta", 15.00);
 		p2 = new Produto(null, "Jaqueta Unissex", 70.00);
 		p3 = new Produto(null, "Vestido", 45.00);
+		p4 = new Produto(null, "Boné", 25.00);
+		p5 = new Produto(null, "Bermuda", 30.00);
+		p6 = new Produto(null, "Sapatênis", 120.00);
+		p7 = new Produto(null, "Sandalha", 65.00);
 		est1 = new Estado(null, "MG");
 		est2 = new Estado(null, "SP");
 		c1 = new Cidade(null, "São Paulo", est2);
@@ -119,11 +123,20 @@ public class WebStoreApiApplication implements CommandLineRunner {
 		// Joins
 		p1.getCategorias().addAll(Arrays.asList(cat1));
 		p2.getCategorias().addAll(Arrays.asList(cat1, cat2));
-		p3.getCategorias().addAll(Arrays.asList(cat2));
+		p3.getCategorias().addAll(Arrays.asList(cat2, cat5));
+		p4.getCategorias().addAll(Arrays.asList(cat1, cat5));
+		p5.getCategorias().addAll(Arrays.asList(cat5, cat1));
+		p6.getCategorias().addAll(Arrays.asList(cat1));
+		p7.getCategorias().addAll(Arrays.asList(cat4));
 		
-		cat1.getProdutos().addAll(Arrays.asList(p1, p2));
-		cat2.getProdutos().addAll(Arrays.asList(p2, p3));
-
+		cat1.getProdutos().addAll(Arrays.asList(p1, p2, p4, p5, p6));
+		cat2.getProdutos().addAll(Arrays.asList(p2, p3, p7));
+		cat3.getProdutos().addAll(Arrays.asList(p6));
+		cat4.getProdutos().addAll(Arrays.asList(p7));
+		cat5.getProdutos().addAll(Arrays.asList(p1, p4, p5));
+		cat6.getProdutos().addAll(Arrays.asList(p3));
+		cat7.getProdutos().addAll(Arrays.asList(p4));
+		
 		est2.setCidades(Arrays.asList(c1, c3));
 		est1.setCidades(Arrays.asList(c2));
 		//est2.getCidades().addAll(Arrays.asList(c1, c3));
@@ -140,7 +153,7 @@ public class WebStoreApiApplication implements CommandLineRunner {
 		
 		// Persistencias
 		categoriaRepository.saveAll(Arrays.asList(cat1, cat2, cat3, cat4, cat5, cat6, cat7));
-		produtoRepository.saveAll(Arrays.asList(p1, p2, p3));
+		produtoRepository.saveAll(Arrays.asList(p1, p2, p3, p4, p5, p6, p7));
 		estadoRepository.saveAll(Arrays.asList(est1, est2));
 		cidadeRepository.saveAll(Arrays.asList(c1, c2, c3));
 		clienteRepository.save(cli1); // cliente deve ser salvo primeiro
