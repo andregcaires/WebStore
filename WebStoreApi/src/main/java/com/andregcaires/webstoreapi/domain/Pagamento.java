@@ -12,9 +12,11 @@ import javax.persistence.OneToOne;
 
 import com.andregcaires.webstoreapi.domain.enums.EstadoPagamento;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED) // mapeamento de herança
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property="@type")
 public abstract class Pagamento implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -66,6 +68,7 @@ public abstract class Pagamento implements Serializable {
 		return EstadoPagamento.toEnum(estadoPagamento);
 	}
 
+	@JsonIgnore
 	public void setEstadoPagamento(EstadoPagamento estadoPagamento) {
 		this.estadoPagamento = estadoPagamento.getCod();
 	}
