@@ -1,4 +1,5 @@
 // POSTS
+// clientes/
 {
 	"nome": "TESTANDO"
 	, "email": "testando@teste.com"
@@ -12,6 +13,37 @@
 	, "cidadeId": "1"
 }
 
+// pedidos/
+{
+  "cliente": {
+    "id": 1
+  },
+  "enderecoDeEntrega": {
+    "id": 1
+  },
+  "pagamento": {
+    "numeroDeParcelas": 10,
+    "@type": "pagamentoComCartao"
+  },
+  "itens": [
+    {
+      "quantidade": 2,
+      "produto": {
+        "id": 3
+      }
+    },
+    {
+      "quantidade": 1,
+      "produto": {
+        "id": 1
+      }
+    }
+  ]
+}
+
+
+// PUTS
+// clientes/{id}
 {
 	"nome": "TESTANDO"
 	, "email": "testando@teste.com"

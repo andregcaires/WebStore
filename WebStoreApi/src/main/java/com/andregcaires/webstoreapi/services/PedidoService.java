@@ -39,6 +39,9 @@ public class PedidoService {
 	@Autowired
 	private ClienteService _clienteService;
 	
+	@Autowired
+	private EmailService _emailService;
+	
 	public List<Pedido> findAll() {
 		return _repo.findAll();
 	}
@@ -83,6 +86,7 @@ public class PedidoService {
 		_pagamentoRepository.save(entity.getPagamento());
 		_itemPedidoRepository.saveAll(entity.getItens());
 		System.out.println(entity);
+		_emailService.sendOrderConfirmationEmail(entity);
 		return entity;
 	}
 	
