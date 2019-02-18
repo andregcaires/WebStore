@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.andregcaires.webstoreapi.domain.Categoria;
@@ -19,6 +20,7 @@ import com.andregcaires.webstoreapi.domain.PagamentoComCartao;
 import com.andregcaires.webstoreapi.domain.Pedido;
 import com.andregcaires.webstoreapi.domain.Produto;
 import com.andregcaires.webstoreapi.domain.enums.EstadoPagamento;
+import com.andregcaires.webstoreapi.domain.enums.Perfil;
 import com.andregcaires.webstoreapi.domain.enums.TipoCliente;
 import com.andregcaires.webstoreapi.repositories.CategoriaRepository;
 import com.andregcaires.webstoreapi.repositories.CidadeRepository;
@@ -60,6 +62,9 @@ public class DatabaseService {
 	@Autowired
 	private ItemPedidoRepository itemPedidoRepository;
 	
+	@Autowired
+	private BCryptPasswordEncoder _bcrypt;
+	
 	public void initDatabase() throws ParseException {
 		// auxiliar
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyy HH:mm");
@@ -69,7 +74,7 @@ public class DatabaseService {
 		Produto p1, p2, p3, p4, p5, p6, p7;
 		Estado est1, est2;
 		Cidade c1, c2, c3;
-		Cliente cli1;
+		Cliente cli1, cli2;
 		Endereco end1, end2;
 		Pedido ped1, ped2;
 		Pagamento pagto1, pagto2;
@@ -96,8 +101,11 @@ public class DatabaseService {
 		c1 = new Cidade(null, "São Paulo", est2);
 		c2 = new Cidade(null, "Belo Horizonte", est1);		
 		c3 = new Cidade(null, "Campinas", est2);		
-		cli1 = new Cliente(null, "Maria Silva", "maria@teste.com", "01127669001", TipoCliente.PESSOAFISICA);
+		cli1 = new Cliente(null, "Maria Silva", "maria@teste.com", "01127669001", TipoCliente.PESSOAFISICA, _bcrypt.encode("123"));
 		cli1.getTelefones().addAll(Arrays.asList("16991234567", "169987456123"));
+		cli2 = new Cliente(null, "Super User", "guaraldocaires@gmail.com", "05439485015", TipoCliente.PESSOAFISICA, _bcrypt.encode("456"));
+		cli2.addPerfil(Perfil.ADMIN);
+		cli2.getTelefones().addAll(Arrays.asList("16999999999", "16888888888"));
 		end1 = new Endereco(null, "Logradouro Teste", "Num Teste", "Comp Teste", "Bairo Teste", "Cep Teste", cli1, c1);
 		end2= new Endereco(null, "Logradouro 2", "Num 2", "Comp 2", "Bairo 2", "Cep 2", cli1, c2);
 		ped1 = new Pedido(null, sdf.parse("31/01/1990 00:00"), cli1, end1);
@@ -148,7 +156,7 @@ public class DatabaseService {
 		produtoRepository.saveAll(Arrays.asList(p1, p2, p3, p4, p5, p6, p7));
 		estadoRepository.saveAll(Arrays.asList(est1, est2));
 		cidadeRepository.saveAll(Arrays.asList(c1, c2, c3));
-		clienteRepository.save(cli1); // cliente deve ser salvo primeiro
+		clienteRepository.saveAll(Arrays.asList(cli1, cli2)); // cliente deve ser salvo primeiro
 		enderecoRepository.saveAll(Arrays.asList(end1, end2));
 		pedidoRepository.saveAll(Arrays.asList(ped1, ped2));
 		pagamentoRepository.saveAll(Arrays.asList(pagto1, pagto2));
