@@ -41,6 +41,12 @@
   ]
 }
 
+// login/
+{
+	"email": "maria@teste.com",
+	"senha": "123"
+}
+
 
 // PUTS
 // clientes/{id}

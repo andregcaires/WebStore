@@ -23,4 +23,3 @@ public class WebStoreApiApplication implements CommandLineRunner {
 	}
 	
 }
-

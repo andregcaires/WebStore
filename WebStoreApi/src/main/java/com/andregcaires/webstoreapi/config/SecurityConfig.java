@@ -19,6 +19,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.andregcaires.webstoreapi.security.JWTAuthenticationFilter;
+import com.andregcaires.webstoreapi.security.JWTAuthorizationFilter;
 import com.andregcaires.webstoreapi.security.JWTUtil;
 
 
@@ -73,7 +74,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			
 			.anyRequest().authenticated(); // registra todos os outros paths para serem autenticados
 		
+		// inclui filtro para autenticação
 		http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
+		
+		// inclui filtro para autorização
+		http.addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtUtil, userDetailsService));
 		
 		// assegura que back não criará sessão de usuário
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
