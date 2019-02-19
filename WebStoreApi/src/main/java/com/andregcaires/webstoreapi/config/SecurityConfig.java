@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -28,6 +29,7 @@ import com.andregcaires.webstoreapi.security.JWTUtil;
  * */
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true) // habilita autorização em rotas por role
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
@@ -52,6 +54,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			"/categorias/**"
 	};
 	
+	public static final String[] PUBLIC_MATCHERS_POST = {
+			"/clientes/**"
+	};
+	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception{
 		
@@ -71,6 +77,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers(HttpMethod.GET,PUBLIC_MATCHERS_GET).permitAll() // libera permissão para GET
 			
 			.antMatchers(PUBLIC_MATCHERS).permitAll()// autoriza todos os paths listados para acesso publico
+			
+			.antMatchers(HttpMethod.POST, PUBLIC_MATCHERS_POST).permitAll()
 			
 			.anyRequest().authenticated(); // registra todos os outros paths para serem autenticados
 		
