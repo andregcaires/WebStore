@@ -7,14 +7,20 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import com.andregcaires.webstoreapi.security.JWTAuthenticationFilter;
+import com.andregcaires.webstoreapi.security.JWTUtil;
+
 
 /*
  * Classe que define configurações de segurança (JWT)
@@ -25,7 +31,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
 	private Environment env;	
+	
+	@Autowired
+	private UserDetailsService userDetailsService;
 
+	@Autowired
+	private JWTUtil jwtUtil;
+	
 	/*
 	 * Lista de paths liberados para acesso sem autenticação
 	 * */
@@ -61,8 +73,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			
 			.anyRequest().authenticated(); // registra todos os outros paths para serem autenticados
 		
+		http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
+		
 		// assegura que back não criará sessão de usuário
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
 	}
 	
 	/*
@@ -79,6 +94,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Bean
 	public BCryptPasswordEncoder bCryptPasswordEncoder() {
 		return new BCryptPasswordEncoder();
+	}
+	
+	
+	/*
+	 * Método indica qual o userDetailService usado e qual o algoritmo de codificação da senha
+	 * */
+	@Override
+	public void configure(AuthenticationManagerBuilder auth) throws Exception {
+		
+		auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
+		
 	}
 	
 }
