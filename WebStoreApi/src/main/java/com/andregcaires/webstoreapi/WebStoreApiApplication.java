@@ -1,5 +1,6 @@
 package com.andregcaires.webstoreapi;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.springframework.boot.CommandLineRunner;
@@ -17,8 +18,10 @@ public class WebStoreApiApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
+		
 		System.out.println("Aplicação iniciada: "
-							+ new Date().toString());
+							+ new SimpleDateFormat("dd/MM/yyy HH:mm")
+							.parse(new Date(System.currentTimeMillis()).toString()));
 		
 	}
 	
