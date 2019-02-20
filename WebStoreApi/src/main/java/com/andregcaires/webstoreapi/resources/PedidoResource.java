@@ -6,15 +6,18 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.andregcaires.webstoreapi.domain.Pedido;
+import com.andregcaires.webstoreapi.dto.CategoriaDTO;
 import com.andregcaires.webstoreapi.services.PedidoService;
 
 @RestController
@@ -48,4 +51,15 @@ public class PedidoResource {
 		return ResponseEntity.created(uri).build();
 	}
 	
+	@RequestMapping( value = {"/page", "/page/"}, method = RequestMethod.GET )
+	public ResponseEntity<Page<Pedido>> findPage( 
+			@RequestParam(value = "pageIndex", defaultValue = "0") Integer pageIndex
+			, @RequestParam(value = "linesPerPage", defaultValue = "24") Integer linesPerPage
+			, @RequestParam(value = "orderBy", defaultValue = "instante") String orderBy
+			, @RequestParam(value = "direction", defaultValue = "DESC") String direction ) {
+		
+		Page<Pedido> body = _service.findPage(pageIndex, linesPerPage, orderBy, direction);
+
+		return ResponseEntity.ok().body(body);
+	}
 }

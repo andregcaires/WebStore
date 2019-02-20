@@ -5,9 +5,13 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.andregcaires.webstoreapi.domain.Cliente;
 import com.andregcaires.webstoreapi.domain.ItemPedido;
 import com.andregcaires.webstoreapi.domain.PagamentoComBoleto;
 import com.andregcaires.webstoreapi.domain.Pedido;
@@ -16,6 +20,8 @@ import com.andregcaires.webstoreapi.mocks.MOCKS;
 import com.andregcaires.webstoreapi.repositories.ItemPedidoRepository;
 import com.andregcaires.webstoreapi.repositories.PagamentoRepository;
 import com.andregcaires.webstoreapi.repositories.PedidoRepository;
+import com.andregcaires.webstoreapi.security.UserSpringSecurity;
+import com.andregcaires.webstoreapi.services.exceptions.AuthorizationException;
 import com.andregcaires.webstoreapi.services.exceptions.ObjectNotFoundException;
 
 @Service
@@ -88,6 +94,21 @@ public class PedidoService {
 		System.out.println(entity);
 		_emailService.sendOrderConfirmationEmail(entity);
 		return entity;
+	}
+	
+	public Page<Pedido> findPage(Integer pageIndex, Integer linesPerPage, String orderBy, String direction) {
+		
+		UserSpringSecurity user = UserService.authenticated();
+		
+		if(user == null ) {
+			throw new AuthorizationException("Acesso negado");
+		}
+		
+		PageRequest pageRequest = PageRequest.of(pageIndex, linesPerPage, Direction.valueOf(direction), orderBy);
+		
+		Cliente cliente = _clienteService.findById(user.getId());
+		return _repo.findByCliente(cliente, pageRequest);
+		//return _repo.findByCliente(new Cliente(user.getId(), null, null, null, null, null),pageRequest);
 	}
 	
 }
