@@ -15,91 +15,94 @@ import org.springframework.transaction.annotation.Transactional;
 import com.andregcaires.webstoreapi.domain.Cidade;
 import com.andregcaires.webstoreapi.domain.Cliente;
 import com.andregcaires.webstoreapi.domain.Endereco;
+import com.andregcaires.webstoreapi.domain.enums.Perfil;
 import com.andregcaires.webstoreapi.domain.enums.TipoCliente;
 import com.andregcaires.webstoreapi.dto.ClienteDTO;
 import com.andregcaires.webstoreapi.dto.ClienteEnderecoDTO;
 import com.andregcaires.webstoreapi.repositories.ClienteRepository;
 import com.andregcaires.webstoreapi.repositories.EnderecoRepository;
+import com.andregcaires.webstoreapi.security.UserSpringSecurity;
+import com.andregcaires.webstoreapi.services.exceptions.AuthorizationException;
 import com.andregcaires.webstoreapi.services.exceptions.ConstraintException;
 import com.andregcaires.webstoreapi.services.exceptions.ObjectNotFoundException;
 
-
 @Service
 public class ClienteService {
-	
+
 	@Autowired
 	private ClienteRepository _repo;
 
 	@Autowired
 	private EnderecoRepository _enderecoRepo;
-	
+
 	@Autowired
 	private BCryptPasswordEncoder _bcrypt;
-	
+
 	public Cliente findById(Integer id) {
+
+		UserSpringSecurity user = UserService.authenticated();
+
+		if (user == null || (!user.hasRole(Perfil.ADMIN) && !id.equals(user.getId()))) {
+			throw new AuthorizationException("Acesso negado");
+		}
+
 		Optional<Cliente> obj = _repo.findById(id);
-		
-		return obj.orElseThrow( () -> {
-			throw new ObjectNotFoundException("Objeto não encontrado! ID: "+id
-					+" Tipo: "+ Cliente.class);
+		return obj.orElseThrow(() -> {
+			throw new ObjectNotFoundException("Objeto não encontrado! ID: " + id + " Tipo: " + Cliente.class);
 		});
 	}
-	
+
 	public List<Cliente> findAll() {
-		
+
 		return _repo.findAll();
 	}
-	
+
 	public Cliente update(Cliente entity) {
 		Cliente temp = findById(entity.getId());
 		entity.setCpfOuCnpj(temp.getCpfOuCnpj());
 		entity.setTipo(temp.getTipo().getCod());
 		return _repo.save(entity);
 	}
-	
+
 	@Transactional
 	public Cliente insert(Cliente entity) {
-		
+
 		entity.setId(null);
 		entity = _repo.save(entity);
 		_enderecoRepo.saveAll(entity.getEnderecos());
 		return entity;
 	}
-	
+
 	public void deleteById(Integer id) {
 		try {
 			_repo.deleteById(id);
-		}
-		catch(DataIntegrityViolationException err) {
+		} catch (DataIntegrityViolationException err) {
 			throw new ConstraintException("Não é possivel excluir cliente com pedidos relacionados!");
 		}
 	}
-	
-	public Page<Cliente> findPage(Integer pageIndex, Integer linesPerPage, String orderBy, String direction) {		
-		
+
+	public Page<Cliente> findPage(Integer pageIndex, Integer linesPerPage, String orderBy, String direction) {
+
 		PageRequest pageRequest = PageRequest.of(pageIndex, linesPerPage, Direction.valueOf(direction), orderBy);
-		
+
 		return _repo.findAll(pageRequest);
 	}
-	
+
 	public Cliente fromDTO(ClienteDTO dto) {
 		return new Cliente(dto.getId(), dto.getNome(), dto.getEmail(), null, null, null);
 	}
-	
+
 	public Cliente fromDTO(ClienteEnderecoDTO dto) {
-		Cliente cli = new Cliente(null, dto.getNome()
-				, dto.getEmail(), dto.getCpfOuCnpj()
-				, TipoCliente.toEnum(dto.getTipo()), _bcrypt.encode(dto.getSenha()));	
-		
-		
-		Endereco end = new Endereco(null, dto.getLogradouro(), dto.getNumero()
-				, dto.getComplemento(), dto.getBairro(), dto.getCep()
-				, cli, new Cidade(dto.getCidadeId(), null, null));
-		
+		Cliente cli = new Cliente(null, dto.getNome(), dto.getEmail(), dto.getCpfOuCnpj(),
+				TipoCliente.toEnum(dto.getTipo()), _bcrypt.encode(dto.getSenha()));
+
+		Endereco end = new Endereco(null, dto.getLogradouro(), dto.getNumero(), dto.getComplemento(), dto.getBairro(),
+				dto.getCep(), cli, new Cidade(dto.getCidadeId(), null, null));
+
 		cli.getTelefones().addAll(dto.getTelefones());
 		cli.getEnderecos().add(end);
-		
+
 		return cli;
 	}
-	
+
 }

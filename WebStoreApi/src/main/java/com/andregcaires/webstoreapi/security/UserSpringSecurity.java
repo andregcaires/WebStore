@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.support.GenericTypeAwareAutowireCandidateResolver;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -29,8 +30,14 @@ public class UserSpringSecurity implements UserDetails {
 	private Collection<? extends GrantedAuthority> authorities; // lista de perfis
 	
 	
-	
-	
+	/*
+	 * Retorna se o usuário possui determinado perfil
+	 * 
+	 * */
+	public boolean hasRole(Perfil perfil) {
+		
+		return getAuthorities().contains(new SimpleGrantedAuthority(perfil.getDescricao()));
+	}
 	
 	public UserSpringSecurity() {
 		super();
