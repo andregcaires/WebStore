@@ -101,9 +101,9 @@ public class DatabaseService {
 		c1 = new Cidade(null, "São Paulo", est2);
 		c2 = new Cidade(null, "Belo Horizonte", est1);		
 		c3 = new Cidade(null, "Campinas", est2);		
-		cli1 = new Cliente(null, "Maria Silva", "maria@teste.com", "01127669001", TipoCliente.PESSOAFISICA, _bcrypt.encode("123"));
+		cli1 = new Cliente(null, "Super User", "guaraldocaires@gmail.com", "01127669001", TipoCliente.PESSOAFISICA, _bcrypt.encode("123"));
 		cli1.getTelefones().addAll(Arrays.asList("16991234567", "169987456123"));
-		cli2 = new Cliente(null, "Super User", "guaraldocaires@gmail.com", "05439485015", TipoCliente.PESSOAFISICA, _bcrypt.encode("456"));
+		cli2 = new Cliente(null, "Maria Silva", "maria@teste.com", "05439485015", TipoCliente.PESSOAFISICA, _bcrypt.encode("456"));
 		cli2.addPerfil(Perfil.ADMIN);
 		cli2.getTelefones().addAll(Arrays.asList("16999999999", "16888888888"));
 		end1 = new Endereco(null, "Logradouro Teste", "Num Teste", "Comp Teste", "Bairo Teste", "Cep Teste", cli1, c1);

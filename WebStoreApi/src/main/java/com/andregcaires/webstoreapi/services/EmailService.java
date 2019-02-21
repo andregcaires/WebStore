@@ -1,5 +1,7 @@
 package com.andregcaires.webstoreapi.services;
 
+import javax.mail.internet.MimeMessage;
+
 import org.springframework.mail.SimpleMailMessage;
 
 import com.andregcaires.webstoreapi.domain.Cliente;
@@ -13,5 +15,8 @@ public interface EmailService {
 
 	void sendNewPasswordEmail(Cliente cliente, String newPassword);
 	
+	void sendOrderConfirmationHtmlEmail(Pedido pedido);
+	
+	void sendHtmlEmail(MimeMessage msg);
 	
 }

@@ -92,7 +92,7 @@ public class PedidoService {
 		_pagamentoRepository.save(entity.getPagamento());
 		_itemPedidoRepository.saveAll(entity.getItens());
 		System.out.println(entity);
-		_emailService.sendOrderConfirmationEmail(entity);
+		_emailService.sendOrderConfirmationHtmlEmail(entity);
 		return entity;
 	}
 	

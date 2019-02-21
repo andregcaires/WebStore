@@ -20,8 +20,7 @@ public class WebStoreApiApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		
 		System.out.println("Aplicação iniciada: "
-							+ new SimpleDateFormat("dd/MM/yyy HH:mm")
-							.parse(new Date(System.currentTimeMillis()).toString()));
+							+ new Date().toString());
 		
 	}
 	
